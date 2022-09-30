@@ -4,7 +4,7 @@ import Bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 
-const userSchema = mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     name: {
       type: "String",
@@ -45,7 +45,6 @@ const userSchema = mongoose.Schema(
   { timestaps: true }
 );
 
-
 userSchema.pre("save", async function (next) {
   if (!this.isModified) {
     next();
@@ -60,11 +59,9 @@ userSchema.methods.getJwtToken = function () {
   });
 };
 
-
 userSchema.methods.comparePassword = async function (enteredPassword) {
   return await Bcrypt.compare(enteredPassword, this.password);
 };
-
 
 //generating password reset token
 userSchema.methods.getPasswordResetToken = function () {
@@ -79,5 +76,5 @@ userSchema.methods.getPasswordResetToken = function () {
   return resetToken;
 };
 
-const User = mongoose.model("User", chatModel);
-export { User };
+const User = mongoose.model("User", userSchema);
+export default User;

@@ -1,6 +1,6 @@
-import app from "./app";
-import dotenv from "./config/database";
-import { connectDB } from "./config/database";
+import {app} from "./app";
+import dotenv from "dotenv";
+import  connectDB  from "./config/database";
 
 //handling uncought expection
 process.on("uncaughtException", (error) => {

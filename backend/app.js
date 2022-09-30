@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import errorMiddleware from "./middlewares/error";
+import { errorMiddleware } from "./middlewares/err";
 
 const app = express();
 const corsOptions = {
@@ -14,9 +14,9 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
+import userRoutes from "./routes/userRoutes";
 
-
-
+app.use("/api/user", userRoutes);
 // middlewares for error
 app.use(errorMiddleware);
 export { app };
