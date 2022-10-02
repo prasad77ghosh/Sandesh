@@ -15,8 +15,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 import userRoutes from "./routes/userRoutes";
+import chatRoutes from "./routes/chatRoutes";
 
-app.use("/api/user", userRoutes);
+app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/chat", chatRoutes)
 // middlewares for error
 app.use(errorMiddleware);
 export { app };

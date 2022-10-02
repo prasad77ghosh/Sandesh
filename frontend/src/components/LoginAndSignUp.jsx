@@ -12,8 +12,18 @@ import {
 } from "@chakra-ui/react";
 import Login from "./Auth/Login";
 import SignUp from "./Auth/Signup";
-import Logo from "../images/message.png"
+import Logo from "../images/message.png";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 const LoginAndSign = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (userInfo) {
+      navigate("/chats");
+    }
+  }, [navigate]);
+
   return (
     <>
       <Container maxW="6xl">

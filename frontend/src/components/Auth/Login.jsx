@@ -7,6 +7,7 @@ import {
   InputRightElement,
   Button,
   Box,
+  Text,
 } from "@chakra-ui/react";
 import React from "react";
 import { useState } from "react";
@@ -14,7 +15,7 @@ import { AiOutlineEye } from "react-icons/ai";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../Slices/loginSlices";
+import { loginUser } from "../../Slices/AuthSlices/loginSlices";
 import { useEffect } from "react";
 import { useToast } from "@chakra-ui/react";
 
@@ -43,12 +44,6 @@ const Login = () => {
 
     dispatch(loginUser({ email, password }));
     setLoading(false);
-    toast({
-      title: "Login Successfully",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
     return;
   };
 
@@ -64,6 +59,12 @@ const Login = () => {
     }
 
     if (isAuthenticated) {
+      toast({
+        title: "Login Successfully",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
       navigate("/chats");
       setLoading(false);
     }
@@ -110,17 +111,8 @@ const Login = () => {
       >
         Login
       </Button>
-      <Button
-        variant="outline"
-        colorScheme="orange"
-        width="100%"
-        style={{ marginTop: 15 }}
-        onClick={() => {
-          setEmail("guestuser@gmail.com");
-          setPassword("guest@8989");
-        }}
-      >
-        Get Guest User Credentials
+      <Button colorScheme="blue" variant="link">
+        Forgot Password
       </Button>
     </VStack>
   );

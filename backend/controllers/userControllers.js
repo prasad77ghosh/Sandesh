@@ -1,23 +1,19 @@
 import { ErrorHandler } from "../utils/ErrorHandler";
-import  User  from "../models/userModel";
+import User from "../models/userModel";
 import { sendToken } from "../utils/jwtToken";
 import { sendEmail } from "../utils/sendEmail";
 import crypto from "crypto";
-import asyncHandler from "express-async-handler"
+import asyncHandler from "express-async-handler";
 
 //register User
 const RegisterUser = asyncHandler(async (req, res, next) => {
   const { name, email, password, pic } = req.body;
   if (!name || !email || !password) {
-    return next(
-      new ErrorHandler("All fileds are required", 400)
-    );
+    return next(new ErrorHandler("All fileds are required", 400));
   }
   const userExists = await User.findOne({ email });
   if (userExists) {
-    return next(
-      new ErrorHandler("User already exists", 400)
-    );
+    return next(new ErrorHandler("User already exists", 400));
   }
   const user = await User.create({
     name,
@@ -27,7 +23,6 @@ const RegisterUser = asyncHandler(async (req, res, next) => {
   });
   sendToken(user, 201, res);
 });
-
 
 //login user
 const LoginUser = asyncHandler(async (req, res, next) => {
@@ -53,7 +48,6 @@ const LoginUser = asyncHandler(async (req, res, next) => {
   sendToken(user, 200, res);
 });
 
-
 //logout user
 const logOutUser = asyncHandler(async (req, res, next) => {
   res.cookie("token", null, {
@@ -77,7 +71,9 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
   const resetToken = user.getPasswordResetToken();
   // this methods created after creating user so we have to save user to store resetPasswordToken and resetPasswordExpire indide uuserSchma
   await user.save({ validateBeforeSave: false });
-  const resetPasswordUrl = `${req.protocol}://${req.get("host")}/api/user/password/reset/${resetToken}`;
+  const resetPasswordUrl = `${req.protocol}://${req.get(
+    "host"
+  )}/api/user/password/reset/${resetToken}`;
   const message = `Your reset password token is :- \n\n ${resetPasswordUrl} \n\n if you have not request this email then please ignore it`;
 
   try {
@@ -132,5 +128,18 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   sendToken(user, 200, res);
 });
 
+const getAllUsers = asyncHandler(async (req, res, next) => {
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
 
-export { RegisterUser, LoginUser, logOutUser, forgotPassword, resetPassword };
+    const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+    res.send(users);
+});
+
+export { RegisterUser, LoginUser, logOutUser, forgotPassword, resetPassword, getAllUsers };

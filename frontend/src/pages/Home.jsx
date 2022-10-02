@@ -2,7 +2,6 @@ import React from "react";
 import { Box, Container, Image, Text, VStack, Button } from "@chakra-ui/react";
 import Logo from "../images/message.png";
 import {Link} from "react-router-dom"
-
 const Home = () => {
   return (
     <>

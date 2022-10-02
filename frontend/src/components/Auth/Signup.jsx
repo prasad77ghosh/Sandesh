@@ -16,7 +16,7 @@ import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../../Slices/registerSlice";
+import { registerUser } from "../../Slices/AuthSlices/registerSlice";
 import { useEffect } from "react";
 
 const SignUp = () => {

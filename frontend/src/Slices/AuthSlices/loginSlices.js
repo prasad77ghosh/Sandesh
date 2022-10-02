@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { login } from "../Services/authService";
+import { login } from "../../Services/authService";
 
 const initialState = {
   isAuthenticated: false,
@@ -12,6 +12,7 @@ export const loginUser = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const res = await login(email, password);
+      localStorage.setItem("userInfo", JSON.stringify(res.data));
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);

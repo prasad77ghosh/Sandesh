@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { signUp } from "../Services/authService";
+import { signUp } from "../../Services/authService";
 
 const initialState = {
   isAuthenticated: false,
@@ -12,6 +12,7 @@ export const registerUser = createAsyncThunk(
   async ({ name, email, password }, { rejectWithValue }) => {
     try {
       const res = await signUp(name, email, password);
+      localStorage.setItem("userInfo", JSON.stringify(res.data));
       return res.data;
     } catch (error) {
       console.log(error.response.data.message);
