@@ -13,11 +13,9 @@ import React from "react";
 import { useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../Slices/AuthSlices/loginSlices";
-import { useEffect } from "react";
 import { useToast } from "@chakra-ui/react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -26,49 +24,64 @@ const Login = () => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   const toast = useToast();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { isAuthenticated, error } = useSelector((state) => state.loginReducer);
-  const submitHandler = () => {
+  const history = useHistory();
+
+  const submitHandler = async () => {
     setLoading(true);
     if (!email || !password) {
       toast({
-        title: "Please fill all the fields",
+        title: "Please Fill all the Feilds",
         status: "warning",
         duration: 5000,
         isClosable: true,
+        position: "bottom",
       });
       setLoading(false);
       return;
     }
 
-    dispatch(loginUser({ email, password }));
-    setLoading(false);
-    return;
-  };
+    // console.log(email, password);
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
 
-  useEffect(() => {
-    if (error) {
-      toast({
-        title: error,
-        status: "warning",
-        duration: 5000,
-        isClosable: true,
-      });
-      setLoading(false);
-    }
+      const { data } = await axios.post(
+        "/api/v1/user/login",
+        { email, password },
+        config
+      );
 
-    if (isAuthenticated) {
+      // console.log(JSON.stringify(data));
       toast({
-        title: "Login Successfully",
+        title: "Login Successful",
         status: "success",
         duration: 5000,
         isClosable: true,
+        position: "bottom",
       });
-      navigate("/chats");
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      setLoading(false);
+      history.push("/chats");
+    } catch (error) {
+       const message =
+         (error.response &&
+           error.response.data &&
+           error.response.data.message) ||
+         error.message ||
+         error.toString();
+      toast({
+        title: message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
       setLoading(false);
     }
-  }, [error, toast, setLoading, isAuthenticated, navigate]);
+  };
 
   return (
     <VStack spacing={4}>
@@ -106,8 +119,8 @@ const Login = () => {
         colorScheme="telegram"
         width="100%"
         style={{ marginTop: 15 }}
-        onClick={submitHandler}
         isLoading={loading}
+        onClick={submitHandler}
       >
         Login
       </Button>

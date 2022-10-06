@@ -1,22 +1,20 @@
+import React from "react";
 import "./App.css";
-import Home from "./pages/Home";
+import { Route } from "react-router-dom";
 import Chat from "./pages/Chat";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoginAndSign from "./components/LoginAndSignUp";
+import Intro from "./pages/Intro";
+import LoginAndRegister from "./pages/LoginAndRegister";
 
-
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/chats" element={<Chat />} />
-          <Route path="/login_SignUp" element={<LoginAndSign />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <>
+      <div className="App">
+        <Route path="/" component={Intro} exact/>
+        <Route path="/login_register" component={LoginAndRegister} />
+        <Route path="/chats" component={Chat} />
+      </div>
+    </>
   );
-}
+};
 
 export default App;

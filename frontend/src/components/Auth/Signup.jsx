@@ -14,41 +14,37 @@ import { useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { useToast } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../../Slices/AuthSlices/registerSlice";
-import { useEffect } from "react";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+
 
 const SignUp = () => {
   const toast = useToast();
-  const [loading, setLoading] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [pic, setPic] = useState("");
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [confirmpassword, setConfirmpassword] = useState();
+  const [password, setPassword] = useState();
+  const [pic, setPic] = useState();
+  const [picLoading, setPicLoading] = useState(false);
   const [show, setShow] = React.useState(false);
   const [showC, setShowC] = React.useState(false);
   const handleClick = () => setShow(!show);
   const handleClickC = () => setShowC(!showC);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { isAuthenticated, error } = useSelector(
-    (state) => state.signUpReducer
-  );
+  const history = useHistory();
 
   const postDetails = (pics) => {
-    setLoading(true);
+    setPicLoading(true);
     if (pics === undefined) {
       toast({
-        title: "Please select an image",
-        status: "success",
+        title: "Please Select an Image!",
+        status: "warning",
         duration: 5000,
         isClosable: true,
+        position: "bottom",
       });
       return;
     }
-
+    console.log(pics);
     if (pics.type === "image/jpeg" || pics.type === "image/png") {
       const data = new FormData();
       data.append("file", pics);
@@ -61,75 +57,95 @@ const SignUp = () => {
         .then((res) => res.json())
         .then((data) => {
           setPic(data.url.toString());
-          setLoading(false);
-          console.log(data);
+          console.log(data.url.toString());
+          setPicLoading(false);
         })
         .catch((err) => {
           console.log(err);
-          setLoading(false);
+          setPicLoading(false);
         });
     } else {
       toast({
-        title: "Please select an image",
+        title: "Please Select an Image!",
         status: "warning",
         duration: 5000,
         isClosable: true,
+        position: "bottom",
       });
-      setLoading(false);
+      setPicLoading(false);
       return;
     }
   };
 
-  const submitHandler = () => {
-    setLoading(true);
-    if (!name || !email || !password || !confirmPassword) {
+  const submitHandler = async () => {
+    setPicLoading(true);
+    if (!name || !email || !password || !confirmpassword) {
       toast({
-        title: "Please fill all fields",
+        title: "Please Fill all the Feilds",
         status: "warning",
         duration: 5000,
         isClosable: true,
+        position: "bottom",
       });
-      setLoading(false);
+      setPicLoading(false);
       return;
     }
 
-    if (password !== confirmPassword) {
+    if (password !== confirmpassword) {
       toast({
-        title: "Passwords did not match",
+        title: "Passwords Do Not Match",
         status: "warning",
         duration: 5000,
         isClosable: true,
+        position: "bottom",
       });
-      setLoading(false);
       return;
     }
 
-    dispatch(registerUser({ name, email, password, pic }));
-    setLoading(false);
-    toast({
-      title: "Register Successfully",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
+    // API Call for registration
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const { data } = await axios.post(
+        "api/v1/user/register",
+        {
+          name,
+          email,
+          password,
+          pic,
+        },
+        config
+      );
+
+      toast({
+        title: "Register Successfully",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      history.push("/chats");
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message || error.toString();
+      toast({
+        title: message,
+        duration: 5000,
+        status: "error",
+        isClosable: true,
+        position: "bottom",
+      });
+      setPicLoading(false);
+    }
   };
-
-  useEffect(() => {
-    if (error) {
-      toast({
-        title: error,
-        status: "warning",
-        duration: 5000,
-        isClosable: true,
-      });
-      setLoading(false);
-    }
-
-    if (isAuthenticated) {
-      navigate("/chats");
-      setLoading(false);
-    }
-  }, [error, toast, setLoading, isAuthenticated, navigate]);
 
   return (
     <VStack spacing={2}>
@@ -152,8 +168,7 @@ const SignUp = () => {
       <FormControl id="password" isRequired>
         <FormLabel>Password</FormLabel>
         <Text fontSize={"13px"} mb="10px">
-          Password must contain 8-character atleast 1-capital letter,
-          1-specialchar,1-number
+          Password (must contain 1-Capital, 1-Number, 1-Special Char)
         </Text>
         <InputGroup size="md">
           <Input
@@ -176,17 +191,14 @@ const SignUp = () => {
       </FormControl>
       <FormControl id="confirm-password" isRequired>
         <FormLabel>Confirm Password</FormLabel>
-        <Text fontSize={"13px"} mb="10px">
-          Password must contain 8-character atleast 1-capital letter,
-          1-specialchar,1-number
-        </Text>
+        <Text fontSize={"13px"} mb="10px"></Text>
         <InputGroup size="md">
           <Input
             pr="4.5rem"
             type={showC ? "text" : "password"}
             placeholder="Enter Your Confirm Password"
             borderColor={"whiteAlpha.300"}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(e) => setConfirmpassword(e.target.value)}
           />
           <InputRightElement width="4.5rem">
             <Box onClick={handleClickC}>
@@ -216,8 +228,8 @@ const SignUp = () => {
         colorScheme="telegram"
         width="100%"
         style={{ marginTop: 15 }}
+        isLoading={picLoading}
         onClick={submitHandler}
-        isLoading={loading}
       >
         Sign Up
       </Button>

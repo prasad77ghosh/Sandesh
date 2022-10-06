@@ -1,8 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Box, Container, Image, Text, VStack, Button } from "@chakra-ui/react";
 import Logo from "../images/message.png";
-import {Link} from "react-router-dom"
-const Home = () => {
+const Intro = () => {
   return (
     <>
       <Container maxW="4xl" height="100vh" centerContent>
@@ -40,7 +40,7 @@ const Home = () => {
               </Text>
             </Box>
             <Box mt={["3rem", "4rem"]}>
-              <Link to="/login_SignUp">
+              <Link to="login_register">
                 <Button
                   size="md"
                   height={["40px", "45px"]}
@@ -60,4 +60,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Intro;

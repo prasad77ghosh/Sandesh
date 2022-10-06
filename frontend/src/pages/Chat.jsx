@@ -1,30 +1,29 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
+import React from "react";
+import { Box } from "@chakra-ui/react";
+import NavBar from "../Components/chatComp/NavBar";
+import MyChats from "../Components/chatComp/MyChats";
+import ChatBox from "../Components/chatComp/ChatBox";
+import { ChatState } from "../Context/ChatProvider";
 const Chat = () => {
-  const [user, setUser] = useState();
-  const navigate = useNavigate();
+  const { user } = ChatState();
 
-  useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    setUser(userInfo);
-    if (!userInfo) {
-      navigate("/login_SignUp");
-    }
-  }, [navigate]);
-
-  return(
+  return (
     <>
-    <div style={{width:"100%"}}>
-      {/* {user && <SideDrawer/>} */}
-      <Box>
-        {/* {user && <MyChats/>} */}
-        {/* {user && <ChatBox/>} */}
-      </Box>
-    </div>
+      <div style={{ width: "100%" }}>
+        {user && <NavBar user={user} />}
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          w="100%"
+          height="91.5vh"
+          p="10px"
+        >
+          {user && <MyChats />}
+          {user && <ChatBox />}
+        </Box>
+      </div>
     </>
-  )
+  );
 };
 
 export default Chat;

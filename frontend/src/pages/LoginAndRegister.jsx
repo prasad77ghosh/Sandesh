@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Container,
   Box,
@@ -10,20 +10,18 @@ import {
   TabPanels,
   Image,
 } from "@chakra-ui/react";
-import Login from "./Auth/Login";
-import SignUp from "./Auth/Signup";
+import Login from "../Components/Auth/Login";
+import SignUp from "../Components/Auth/SignUp";
 import Logo from "../images/message.png";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-const LoginAndSign = () => {
-  const navigate = useNavigate();
+import { useHistory } from "react-router-dom";
+const Home = () => {
+  const history = useHistory();
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if (userInfo) {
-      navigate("/chats");
+      history.push("/chats");
     }
-  }, [navigate]);
-
+  }, [history]);
   return (
     <>
       <Container maxW="6xl">
@@ -65,4 +63,4 @@ const LoginAndSign = () => {
   );
 };
 
-export default LoginAndSign;
+export default Home;
