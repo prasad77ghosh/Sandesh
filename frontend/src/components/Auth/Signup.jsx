@@ -15,7 +15,7 @@ import { AiOutlineEye } from "react-icons/ai";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 const SignUp = () => {
@@ -30,7 +30,7 @@ const SignUp = () => {
   const [showC, setShowC] = React.useState(false);
   const handleClick = () => setShow(!show);
   const handleClickC = () => setShowC(!showC);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const postDetails = (pics) => {
     setPicLoading(true);
@@ -129,7 +129,7 @@ const SignUp = () => {
         position: "bottom",
       });
       localStorage.setItem("userInfo", JSON.stringify(data));
-      history.push("/chats");
+      navigate("/chats");
     } catch (error) {
       const message =
         (error.response &&

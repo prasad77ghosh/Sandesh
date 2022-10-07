@@ -19,7 +19,7 @@ import {
   DrawerCloseButton,
 } from "@chakra-ui/react";
 
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { useToast } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import React from "react";
@@ -29,26 +29,29 @@ import { IoIosNotifications } from "react-icons/io";
 import { IoIosArrowDown } from "react-icons/io";
 import Logo from "../../images/message.png";
 import Profile from "./Profile";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ChatLoader from "./ChatLoader";
 import UserListItem from "../UserComp/UserListItem";
-const NavBar = ({ user }) => {
+import MyContext from "../../Context/MyContext";
+import { Spinner } from "@chakra-ui/react";
+const NavBar = () => {
   const [search, setSearch] = useState();
   const [searchResult, setSearchResult] = useState();
   const [loading, setLoading] = useState();
   const [loadingChat, setLoadingChat] = useState();
-  const history = useHistory();
+  const navigate = useNavigate();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
+  const { user, selectedChat, setSelectedChat, chats, setChats } =
+    useContext(MyContext);
 
+  const m_user = user.user;
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
-    history.push("/login_register");
+    navigate("/login_register");
   };
-
-  
 
   const handleSearch = async () => {
     if (!search) {
@@ -79,8 +82,38 @@ const NavBar = ({ user }) => {
     }
   };
 
-  const accessChat = (userId) => {
-    
+  const accessChat = async (userId) => {
+    try {
+      setLoadingChat(true);
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const { data } = await axios.post("/api/v1/chat", { userId }, config);
+      if (!chats.find((c) => c._id === data._id)) {
+        setChats([data, ...chats]);
+      }
+      setSelectedChat(data);
+      setLoadingChat(false);
+      onClose();
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      toast({
+        title: message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+    }
   };
 
   return (
@@ -119,12 +152,18 @@ const NavBar = ({ user }) => {
           </Menu>
           <Menu>
             <MenuButton as={Button} rightIcon={<IoIosArrowDown />}>
-              <Avatar size={"sm"} name={user.name} src={user.pic} />
+              <Avatar
+                size={"sm"}
+                name={user && m_user.name}
+                src={user && m_user.pic}
+              />
             </MenuButton>
             <MenuList>
-              <Profile user={user}>
-                <MenuItem>My Profile</MenuItem>
-              </Profile>
+              {user && (
+                <Profile user={m_user}>
+                  <MenuItem>My Profile</MenuItem>
+                </Profile>
+              )}
               <MenuItem onClick={logoutHandler}>Logout</MenuItem>
             </MenuList>
           </Menu>
@@ -156,6 +195,8 @@ const NavBar = ({ user }) => {
                 />
               ))
             )}
+
+            {loadingChat && <Spinner size="xl" ml="auto" display="flex" />}
           </DrawerBody>
           <DrawerFooter>
             <Button variant="outline" mr={3} onClick={onClose}>

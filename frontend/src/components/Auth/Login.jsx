@@ -14,7 +14,7 @@ import { useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { useToast } from "@chakra-ui/react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Login = () => {
@@ -24,7 +24,7 @@ const Login = () => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   const toast = useToast();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const submitHandler = async () => {
     setLoading(true);
@@ -53,8 +53,6 @@ const Login = () => {
         { email, password },
         config
       );
-
-      // console.log(JSON.stringify(data));
       toast({
         title: "Login Successful",
         status: "success",
@@ -64,14 +62,14 @@ const Login = () => {
       });
       localStorage.setItem("userInfo", JSON.stringify(data));
       setLoading(false);
-      history.push("/chats");
+      navigate("/chats");
     } catch (error) {
-       const message =
-         (error.response &&
-           error.response.data &&
-           error.response.data.message) ||
-         error.message ||
-         error.toString();
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
       toast({
         title: message,
         status: "error",

@@ -13,15 +13,15 @@ import {
 import Login from "../Components/Auth/Login";
 import SignUp from "../Components/Auth/SignUp";
 import Logo from "../images/message.png";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const Home = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if (userInfo) {
-      history.push("/chats");
+      navigate("/chats");
     }
-  }, [history]);
+  }, [navigate]);
   return (
     <>
       <Container maxW="6xl">
