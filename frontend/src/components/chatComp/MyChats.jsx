@@ -9,9 +9,12 @@ import ChatLoader from "./ChatLoader";
 import { getSender } from "../../logics/ChatLogic";
 import GroupChatModel from "./GroupChatModel";
 
-const MyChats = () => {
-  const [loggedUser, setLoggedUser] = useState();
-  const { user, selectedChat, setSelectedChat, chats, setChats }  = useContext(MyContext);
+const MyChats = ({ fetchAgain }) => {
+  // const [loggedUser, setLoggedUser] = useState();
+  const {user, selectedChat, setSelectedChat, chats, setChats } =
+    useContext(MyContext);
+
+    const m_user = user.user;
   const toast = useToast();
 
   const fetchChats = async () => {
@@ -36,11 +39,10 @@ const MyChats = () => {
     }
   };
 
-  
   useEffect(() => {
-    setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
+    // setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();
-  }, []);
+  }, [fetchAgain]);
 
   return (
     <>
@@ -101,7 +103,7 @@ const MyChats = () => {
                 >
                   <Text>
                     {!chat.isGroupChat
-                      ? getSender(loggedUser, chat?.users)
+                      ? getSender(m_user, chat?.users)
                       : chat?.chatName}
                   </Text>
                 </Box>

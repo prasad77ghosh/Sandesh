@@ -18,6 +18,7 @@ const MyProvider = ({ children }) => {
     }
     setUser(userInfo);
   }, [navigate]);
+
   return (
     <>
       <MyContext.Provider

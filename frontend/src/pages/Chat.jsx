@@ -4,8 +4,10 @@ import MyChats from "../Components/chatComp/MyChats";
 import ChatBox from "../Components/chatComp/ChatBox";
 import { useContext } from "react";
 import MyContext from "../Context/MyContext";
+import { useState } from "react";
 const Chat = () => {
   const { user } = useContext(MyContext);
+  const [fetchAgain, setFetchAgain] = useState();
   return (
     <>
       <div style={{ width: "100%" }}>
@@ -17,8 +19,17 @@ const Chat = () => {
           height="91.5vh"
           p="10px"
         >
-          {user && <MyChats />}
-          {user && <ChatBox />}
+          {user && (
+            <MyChats
+              fetchAngain={fetchAgain}
+            />
+          )}
+          {user && (
+            <ChatBox
+              fetchAngain={fetchAgain}
+              setFetchAngain={setFetchAgain}
+            />
+          )}
         </Box>
       </div>
     </>

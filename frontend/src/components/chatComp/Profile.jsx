@@ -50,7 +50,7 @@ const Profile = ({ user, children }) => {
             />
 
             <Text fontSize="2xl" fontWeight="medium" mt="1rem">
-             Email:- {user.email}
+              Email:- {user.email}
             </Text>
           </ModalBody>
           <ModalFooter>
