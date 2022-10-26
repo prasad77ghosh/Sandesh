@@ -1,10 +1,9 @@
 import express from "express";
 import cookieParser from "cookie-parser";
-<<<<<<< HEAD
+
+
 import  errorMiddleware  from "./middlewares/err";
-=======
-import { errorMiddleware } from "./middlewares/err";
->>>>>>> 0884cfd81c3cfc3800abb18e223f563f9b598ddd
+
 
 const app = express();
 app.use(express.json());
