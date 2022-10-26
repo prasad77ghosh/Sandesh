@@ -1,6 +1,6 @@
-import { app } from "./app";
+import { app } from "./app.js";
 import dotenv from "dotenv";
-import connectDB from "./config/database";
+import connectDB from "./config/database.js";
 import { Server } from "socket.io";
 
 //handling uncought expection
