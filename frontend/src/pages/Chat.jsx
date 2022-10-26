@@ -16,6 +16,7 @@ const Chat = () => {
           display="flex"
           justifyContent="space-between"
           w="100%"
+          gap = {{md: 2, lg:1}}
           height="91.5vh"
           p="10px"
         >
@@ -26,8 +27,8 @@ const Chat = () => {
           )}
           {user && (
             <ChatBox
-              fetchAngain={fetchAgain}
-              setFetchAngain={setFetchAgain}
+              fetchAgain={fetchAgain}
+              setFetchAgain={setFetchAgain}
             />
           )}
         </Box>

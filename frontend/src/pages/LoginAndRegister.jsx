@@ -11,7 +11,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 import Login from "../Components/Auth/Login";
-import SignUp from "../Components/Auth/SignUp";
+import SignUp from "../Components/Auth/Signup";
 import Logo from "../images/message.png";
 import { useNavigate } from "react-router-dom";
 const Home = () => {

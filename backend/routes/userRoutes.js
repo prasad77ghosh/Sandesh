@@ -1,4 +1,4 @@
-const express = require("express");
+import express from 'express';
 import {
   RegisterUser,
   LoginUser,
@@ -6,8 +6,8 @@ import {
   forgotPassword,
   resetPassword,
   getAllUsers
-} from "../controllers/userControllers";
-import { isAuthUser } from "../middlewares/AuthMiddleware";
+} from "../controllers/userControllers.js";
+import { isAuthUser } from "../middlewares/AuthMiddleware.js";
 
 
 const router = express.Router();

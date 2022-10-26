@@ -1,7 +1,7 @@
-import { ErrorHandler } from "../utils/ErrorHandler";
+import { ErrorHandler } from "../utils/ErrorHandler.js";
 import asyncHandler from "express-async-handler";
-import Chat from "../models/chatModel";
-import User from "../models/userModel";
+import Chat from "../models/chatModel.js";
+import User from "../models/userModel.js";
 
 const accessChat = asyncHandler(async (req, res, next) => {
   const { userId } = req.body;

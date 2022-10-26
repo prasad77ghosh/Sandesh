@@ -46,11 +46,12 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified) {
+  if (!this.isModified("password")) {
     next();
   }
-  const salt = await Bcrypt.genSalt(10);
-  this.password = await Bcrypt.hash(this.password, salt);
+  // const salt = await Bcrypt.genSalt(10);
+  // this.password = await Bcrypt.hash(this.password, salt);
+  this.password = await Bcrypt.hash(this.password, 10);
 });
 
 userSchema.methods.getJwtToken = function () {

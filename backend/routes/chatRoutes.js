@@ -1,5 +1,5 @@
 import express from "express";
-import { isAuthUser } from "../middlewares/AuthMiddleware";
+import { isAuthUser } from "../middlewares/AuthMiddleware.js";
 import {
   accessChat,
   allChats,
@@ -7,7 +7,7 @@ import {
   renameGroup,
   addToGroup,
   removeFromGroup,
-} from "../controllers/chatControllers";
+} from "../controllers/chatControllers.js";
 
 const router = express.Router();
 

@@ -1,4 +1,4 @@
-import {ErrorHandler} from "../utils/ErrorHandler";
+import {ErrorHandler} from "../utils/ErrorHandler.js";
 
 const errorMiddleware =  (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
@@ -34,4 +34,4 @@ const errorMiddleware =  (err, req, res, next) => {
   });
 };
 
-export {errorMiddleware}
+export default errorMiddleware;

@@ -1,7 +1,7 @@
-import { ErrorHandler } from "../utils/ErrorHandler";
-import User from "../models/userModel";
-import { sendToken } from "../utils/jwtToken";
-import { sendEmail } from "../utils/sendEmail";
+import { ErrorHandler } from "../utils/ErrorHandler.js";
+import User from "../models/userModel.js";
+import { sendToken } from "../utils/jwtToken.js";
+import { sendEmail } from "../utils/sendEmail.js";
 import crypto from "crypto";
 import asyncHandler from "express-async-handler";
 
@@ -71,10 +71,11 @@ const forgotPassword = asyncHandler(async (req, res, next) => {
   const resetToken = user.getPasswordResetToken();
   // this methods created after creating user so we have to save user to store resetPasswordToken and resetPasswordExpire indide uuserSchma
   await user.save({ validateBeforeSave: false });
-  const resetPasswordUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/api/user/password/reset/${resetToken}`;
-  const message = `Your reset password token is :- \n\n ${resetPasswordUrl} \n\n if you have not request this email then please ignore it`;
+  // const resetPasswordUrl = `${req.protocol}://${req.get(
+  //   "host"
+  // )}/api/user/password/reset/${resetToken}`;
+  const resetPasswordUrl = `${process.env.FRONT_URL}/reset/password/${resetToken}`;
+  const message = `Your reset password Token is :- \n\n ${resetPasswordUrl} \n\n if you have not request this email then please ignore it`;
 
   try {
     await sendEmail({
@@ -115,9 +116,9 @@ const resetPassword = asyncHandler(async (req, res, next) => {
     );
   }
 
-  if (req.body.password !== req.body.confirmPassword) {
-    return next(new ErrorHandler("Password does not matched", 400));
-  }
+  // if (req.body.password !== req.body.confirmPassword) {
+  //   return next(new ErrorHandler("Password does not matched", 400));
+  // }
 
   user.password = req.body.password;
   user.resetPasswordToken = undefined;

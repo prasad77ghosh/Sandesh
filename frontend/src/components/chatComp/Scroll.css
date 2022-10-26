@@ -1,0 +1,7 @@
+.msg_sec {
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding-top: 20px;
+}
