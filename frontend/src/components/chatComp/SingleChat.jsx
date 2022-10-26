@@ -22,7 +22,7 @@ import ScrollableChat from "./ScrollableChat";
 import "./styles.css";
 import io from "socket.io-client";
 
-const ENDPOINT = "https://localhost:4000/";
+const ENDPOINT = "http://localhost:3300";
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -207,11 +207,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             display="flex"
             justifyContent={{ base: "space-between" }}
             alignItems="center"
+            color="#efefef"
           >
             <IconButton
               display={{ base: "flex", md: "none" }}
               icon={<BiArrowBack />}
               onClick={() => setSelectedChat("")}
+              bg="#CBD5E0"
+              color="black"
             />
 
             {!selectedChat.isGroupChat ? (
@@ -237,7 +240,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             flexDir="column"
             justifyContent="flex-end"
             p={3}
-            bg="#E8E8E8"
+            bg="#2D3748"
             w="100%"
             h="100%"
             borderRadius="lg"
@@ -268,16 +271,18 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             {/* {isTyping ? <div>Loading...</div> : <></>} */}
             <Input
               variant="filled"
-              bg="#E0E0E0"
               placeholder="Enter a message.."
               onChange={typingHandler}
               value={newMessage}
+              bg="#2D3748"
+              color="#efefef"
             />
 
             <IconButton
               icon={<IoMdSend size={20} />}
               width="4rem"
               onClick={sendMessageByBtnClick}
+              bg="#A0AEC0"
             />
           </FormControl>
         </>
@@ -288,7 +293,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           justifyContent="center"
           h="100%"
         >
-          <Text fontSize="3xl" pb={3}>
+          <Text fontSize="3xl" pb={3} color="#efefef">
             Click on a user to start chatting
           </Text>
         </Box>

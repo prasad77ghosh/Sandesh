@@ -1,9 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
-
-
 import  errorMiddleware  from "./middlewares/err";
-
 
 const app = express();
 app.use(express.json());

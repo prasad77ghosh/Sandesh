@@ -129,26 +129,23 @@ const NavBar = () => {
   return (
     <>
       <Box
-        bg="white"
+        bg="#171923"
         p="3px"
         display="flex"
         justifyContent="space-between"
         alignItems="center"
         width="100%"
-        borderWidth="5px"
+        borderWidth="1px"
       >
         <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
-          <Button variant="ghost" ref={btnRef} onClick={onOpen}>
-            <BsSearch size="18" />
-            <Text display={["none", "flex"]} px={4}>
-              Search User
-            </Text>
+          <Button variant="ghost" ref={btnRef} onClick={onOpen} bg="#A0AEC0">
+            <BsSearch size="22" />
           </Button>
         </Tooltip>
 
         <Box display="flex" alignItems="center" gap="3">
           <Image src={Logo} alt="logo" width={["25px", "30px"]} />
-          <Text fontSize={["xl", "2xl"]} fontWeight="medium">
+          <Text fontSize={["xl", "2xl"]} fontWeight="medium" color="#efefef">
             Sandesh
           </Text>
         </Box>
@@ -160,7 +157,7 @@ const NavBar = () => {
                 count={notification.length}
                 effect={Effect.SCALE}
               />
-              <IoIosNotifications size={22} />
+              <IoIosNotifications size={25} color="#CBD5E0" />
             </MenuButton>
             <MenuList pl={3}>
               {!notification.length && "No new messages."}
@@ -180,7 +177,7 @@ const NavBar = () => {
             </MenuList>
           </Menu>
           <Menu>
-            <MenuButton as={Button} rightIcon={<IoIosArrowDown />}>
+            <MenuButton as={Button} rightIcon={<IoIosArrowDown />} bg="#A0AEC0">
               <Avatar
                 size={"sm"}
                 name={user && m_user.name}

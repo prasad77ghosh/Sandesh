@@ -22,7 +22,13 @@ const Profile = ({ user, children }) => {
       {children ? (
         <span onClick={onOpen}>{children}</span>
       ) : (
-        <IconButton display="flex" icon={<HiEye />} onClick={onOpen} />
+        <IconButton
+          display="flex"
+          icon={<HiEye />}
+          onClick={onOpen}
+          color="black"
+          bg="#CBD5E0"
+        />
       )}
 
       <Modal isOpen={isOpen} onClose={onClose} size={["xs", "md"]}>

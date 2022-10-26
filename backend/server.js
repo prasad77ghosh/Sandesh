@@ -1,7 +1,7 @@
-import {app} from "./app";
+import { app } from "./app";
 import dotenv from "dotenv";
 import connectDB from "./config/database";
-import cors from "cors";
+import { Server } from "socket.io";
 
 //handling uncought expection
 process.on("uncaughtException", (error) => {
@@ -9,7 +9,6 @@ process.on("uncaughtException", (error) => {
   console.log("Shutting down the server due to uncought exception");
   process.exit(1);
 });
-
 
 //config
 dotenv.config({ path: "backend/config/config.env" });
@@ -19,10 +18,11 @@ const server = app.listen(process.env.PORT, () => {
   console.log(`Listaning on port ${process.env.PORT}`);
 });
 
-const io = require("socket.io")(server, {
+
+const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.FRONT_URL,
   },
 });
 

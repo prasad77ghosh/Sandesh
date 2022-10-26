@@ -51,10 +51,10 @@ const MyChats = ({ fetchAgain }) => {
         flexDir="column"
         alignItems="center"
         p={3}
-        bg="white"
         w={{ base: "100%", md: "40%", lg: "31%" }}
         borderRadius="lg"
         borderWidth="1px"
+        bg="#171923"
       >
         <Box
           pb={3}
@@ -65,7 +65,7 @@ const MyChats = ({ fetchAgain }) => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Text fontSize={{ base: "xl", md: "xl", lg: "2xl" }}>
+          <Text fontSize={{ base: "xl", md: "xl", lg: "2xl" }} color="#efefef">
             My Chats
           </Text>
           <GroupChatModel>
@@ -74,6 +74,7 @@ const MyChats = ({ fetchAgain }) => {
               gap={2}
               fontSize={{ base: "15px", md: "10px", lg: "17px" }}
               rightIcon={<MdGroupAdd size={25} />}
+              bg="#CBD5E0"
             >
               New Group Chat
             </Button>
@@ -84,11 +85,11 @@ const MyChats = ({ fetchAgain }) => {
           display="flex"
           flexDirection="column"
           p={3}
-          bg="#F8F8F8"
           w="100%"
           h="100%"
           borderRadius="lg"
           overflowY="hidden"
+          bg="#2D3748"
         >
           {chats ? (
             <Stack overflowY="scroll">
@@ -96,7 +97,7 @@ const MyChats = ({ fetchAgain }) => {
                 <Box
                   onClick={() => setSelectedChat(chat)}
                   cursor="pointer"
-                  bg={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
+                  bg={selectedChat === chat ? "#38B2AC" : "#A0AEC0"}
                   color={selectedChat === chat ? "white" : "black"}
                   px={3}
                   py={2}
